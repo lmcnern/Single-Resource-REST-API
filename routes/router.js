@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 module.exports = function(router) {
   router.use(bodyParser.json());
 
+//GET
   router.get('/note', function(req, res) {
     Note.find({}, function(err, data) {
       if (err) {
@@ -15,6 +16,7 @@ module.exports = function(router) {
       });
     });
 
+//POST
   router.post('/note', function(req, res) {
     var newNote = new Note(req.body);
     newNote.save(function (err, data) {
@@ -27,6 +29,7 @@ module.exports = function(router) {
       });
     });
 
+//DELETE
   router.delete('/note/:id', function(req, res) {
     Note.remove({_id: req.params.id }, function(err, data) {
       if (err) {
@@ -38,10 +41,9 @@ module.exports = function(router) {
       });
     });
 
-
+//PUT
   router.put('/note/:id', function(req, res) {
     var updateNote = req.body;
-    // wipe out the id in the body
     delete updateNote._id;
     Note.findByIdAndUpdate(req.params.id, updateNote, function(err, saved) {
       if (err) {
