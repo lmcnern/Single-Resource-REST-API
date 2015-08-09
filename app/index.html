@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+  <title>Document</title>
+</head>
+<body data-ng-app="notesApp">
+  <h1>Animal Roster</h1>
+     <main data-ng-controller="notesController" data-ng-init="getAll()">
+       <table id="notestable">
+        <thead>
+           <tr>
+             <td>
+               Name
+             </td>
+             <td>
+               Species
+             <td>
+               Location
+             <td></td>
+             <td></td>
+           </tr>
+         </thead>
+         <tbody>
+           <tr data-ng-repeat="note in notes">
+             <td>
+               <span ng-show="!note.editing">{{note.name}}</span>
+               <input type="text" form="{{note._id}}form" name="editNoteName" data-ng-model="note.name" ng-show="note.editing">
+             </td>
+             <td>
+               <span ng-show="!note.editing">{{note.species}}</span>
+               <input type="text" form="{{note._id}}form" name="editNoteSpecies" data-ng-model="note.species" ng-show="note.editing">
+             </td>
+             <td>
+               <span ng-show="!note.editing">{{note.location}}</span>
+               <input type="text" form="{{note._id}}form" name="editNoteLocation" data-ng-model="note.location" ng-show="note.editing">
+
+             <!-- </td>
+             <td> -->
+               <!-- <form data-ng-show="note.editing" name="{{note._id}}form" data-ng-submit="update(note)"> -->
+               <button data-ng-show="note.editing" name="{{note._id}}form" data-ng-submit="update(note)" type="submit">Save</button>
+            </td>
+            <td>
+               <button data-ng-click="cancelEdit(note)">Cancel</button>
+             </td>
+             <td>
+                <button data-ng-show="!note.editing" data-ng-click="startEdit(note)">Edit</button>
+              </td>
+              <td>
+              <button data-ng-click="destroy(note)">Delete</button></td>
+            </td>
+              </form>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
+        <form name="newNoteForm" data-ng-submit="create(newNote)">
+          <label for="newNoteName">New Animal Name:</label>
+            <input type="text" required name="newNoteName" data-ng-model="newNote.name">
+          <label for="newNoteSpecies">New Animal Species:</label>
+            <input type="text" name="newNoteSpecies" data-ng-model="newNote.species">
+          <label for="newNoteLocation">New Animal Location:</label>
+            <input type="text" name="newNoteLocation" data-ng-model="newNote.location">
+          <button type="submit">Save</button>
+        </form>
+       </main>
+       <script src="bundle.js"></script>
+     </body>
