@@ -1,11 +1,11 @@
-var Note = require('../note.js'); // if note is in the parent directory, should be ../note.js
+var Note = require('../note.js');
 var bodyParser = require('body-parser');
 
 module.exports = function(router) {
   router.use(bodyParser.json());
 
 //GET
-  router.get('/note', function(req, res) {
+  router.get('/notes', function(req, res) {
     Note.find({}, function(err, data) {
       if (err) {
         console.log('GET error ' + err + '.');
@@ -15,6 +15,17 @@ module.exports = function(router) {
       }
       });
     });
+
+//GET one
+
+  router.get('/note/:id', function(req, res) {
+    Note.findById(req.params.id, function(err, data) {
+      if (err) {
+        console.log(err);
+      }
+      else res.json(data);
+    });
+  });
 
 //POST
   router.post('/note', function(req, res) {

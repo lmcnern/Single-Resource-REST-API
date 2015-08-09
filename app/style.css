@@ -1,0 +1,51 @@
+body {
+  background-color: #FFF6E5;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+h1 {
+  color: #FF7F66;
+}
+
+p {
+  position: absolute;
+  width: 200px;
+  height: 80px;
+  left: 700px;
+  text-align: right;
+  top: 300px;
+}
+
+h4 {
+  color: #2185C5;
+}
+
+input[type=text] {
+  border: 1px dotted #EB7F00;
+  font-family: open sans;
+  margin: 4px;
+  padding: 5px;
+  border-radius: 7pt;
+}
+
+table, td, th {
+  background-color: white;
+  opacity: 0.85;
+  /*border: 1px groove #FF7F66;*/
+  font-family: open sans;
+  /*table-layout: fixed;*/
+}
+
+td {
+  padding: 15px;
+}
+
+label {
+  color: #7ECEFD;
+}
+
+button {
+  font-family: ubuntu;
+  cursor: pointer;
+  border: #7ECEFD;
+}

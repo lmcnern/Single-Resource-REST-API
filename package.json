@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/lmcnern/Single-Resource-REST-API",
   "devDependencies": {
+    "angular": "^1.4.3",
     "chai-http": "^1.0.0",
     "gulp-jshint": "^1.11.2",
     "gulp-mocha": "^2.1.3",

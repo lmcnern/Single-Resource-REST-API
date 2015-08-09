@@ -9,7 +9,7 @@ var expect = chai.expect;
 var Note = require('../note.js');
 
 process.env.MONGOLAB_URI = 'mongodb://localhost/restAPI';
-require('../app');
+// require('./app/');
 
 describe('REST api', function() {
 
@@ -24,10 +24,10 @@ describe('REST api', function() {
   it('should POST a new note to be tested', function(done) {
     chai.request('localhost:8888')
       .post('/note')
-      .send({author:'test', body:'test'})
+      .send({name:'test', species:'test', location:'test'})
       .end(function(err, res) {
         expect(err).to.eql(null);
-        expect(res.body.author).to.eql('test');
+        expect(res.body.name).to.eql('test');
         noteId = res.body._id;
         expect(res.body).to.have.property('_id');
         done();
@@ -46,7 +46,7 @@ describe('REST api', function() {
 
   describe('new note for test', function() {
     beforeEach(function(done) {
-      var testNote = new Note({noteBody: 'test note'});
+      var testNote = new Note({name: 'test note'});
       testNote.save(function(err, data) {
         if(err) throw err;
         this.testNote = data;
@@ -54,11 +54,11 @@ describe('REST api', function() {
       }.bind(this));
     });
 
-  it('should update a note', function(done) {
+  it('should update an note', function(done) {
       var id = this.testNote._id;
       chai.request('localhost:8888')
           .put('/note' + id)
-          .send({noteBody: 'here is a new note'})
+          .send({name: 'here is a new note'})
           .end(function(err, res) {
         expect(err).to.eql(null);
         done();
@@ -79,4 +79,3 @@ describe('REST api', function() {
        });
     });
 });
-
