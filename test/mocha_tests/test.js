@@ -3,17 +3,23 @@
 var mongoose = require('mongoose');
 var chai = require('chai');
 var chaihttp = require('chai-http');
-chai.use(chaihttp);
 var expect = chai.expect;
 
-var Note = require('../note.js');
+var Note = require('../../note.js');
 
 process.env.MONGOLAB_URI = 'mongodb://localhost/restAPI';
-require('../app');
+// require('./app/');
 
-describe('REST api', function() {
+process.env.PORT = 8889;
 
+chai.use(chaihttp);
+
+require('../../server');
+
+describe('app', function() {
   var noteId = null;
+
+  this.timeout(5000);
 
   after(function(done) {
     mongoose.connection.db.dropDatabase(function() {
@@ -22,12 +28,12 @@ describe('REST api', function() {
   });
 
   it('should POST a new note to be tested', function(done) {
-    chai.request('localhost:8888')
-      .post('/note')
-      .send({author:'test', body:'test'})
+    chai.request('localhost:8889')
+      .post('/api/note')
+      .send({name:'test', species:'test', location:'test'})
       .end(function(err, res) {
         expect(err).to.eql(null);
-        expect(res.body.author).to.eql('test');
+        expect(res.body.name).to.eql('test');
         noteId = res.body._id;
         expect(res.body).to.have.property('_id');
         done();
@@ -35,7 +41,7 @@ describe('REST api', function() {
   });
 
   it('should GET the notes', function(done) {
-    chai.request('localhost:8888')
+    chai.request('localhost:8889')
         .get('/note')
         .end(function(err, res) {
           expect(err).to.eql(null);
@@ -46,7 +52,7 @@ describe('REST api', function() {
 
   describe('new note for test', function() {
     beforeEach(function(done) {
-      var testNote = new Note({noteBody: 'test note'});
+      var testNote = new Note({name: 'test note'});
       testNote.save(function(err, data) {
         if(err) throw err;
         this.testNote = data;
@@ -54,11 +60,11 @@ describe('REST api', function() {
       }.bind(this));
     });
 
-  it('should update a note', function(done) {
+  it('should update an note', function(done) {
       var id = this.testNote._id;
-      chai.request('localhost:8888')
+      chai.request('localhost:8889')
           .put('/note' + id)
-          .send({noteBody: 'here is a new note'})
+          .send({name: 'here is a new note'})
           .end(function(err, res) {
         expect(err).to.eql(null);
         done();
@@ -69,7 +75,7 @@ describe('REST api', function() {
 
   describe('404 route', function() {
     it('should 404 if you go to a bad path', function(done) {
-      chai.request('localhost:8888')
+      chai.request('localhost:8889')
           .get('/badbadbadroute')
           .end(function(err, res) {
             expect(err).to.equal(null);
@@ -79,4 +85,3 @@ describe('REST api', function() {
        });
     });
 });
-
