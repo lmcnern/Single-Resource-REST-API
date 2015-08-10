@@ -3,17 +3,23 @@
 var mongoose = require('mongoose');
 var chai = require('chai');
 var chaihttp = require('chai-http');
-chai.use(chaihttp);
 var expect = chai.expect;
 
-var Note = require('../note.js');
+var Note = require('../../note.js');
 
 process.env.MONGOLAB_URI = 'mongodb://localhost/restAPI';
 // require('./app/');
 
-describe('REST api', function() {
+process.env.PORT = 8889;
 
+chai.use(chaihttp);
+
+require('../../server');
+
+describe('app', function() {
   var noteId = null;
+
+  this.timeout(5000);
 
   after(function(done) {
     mongoose.connection.db.dropDatabase(function() {
@@ -22,8 +28,8 @@ describe('REST api', function() {
   });
 
   it('should POST a new note to be tested', function(done) {
-    chai.request('localhost:8888')
-      .post('/note')
+    chai.request('localhost:8889')
+      .post('/api/note')
       .send({name:'test', species:'test', location:'test'})
       .end(function(err, res) {
         expect(err).to.eql(null);
@@ -35,7 +41,7 @@ describe('REST api', function() {
   });
 
   it('should GET the notes', function(done) {
-    chai.request('localhost:8888')
+    chai.request('localhost:8889')
         .get('/note')
         .end(function(err, res) {
           expect(err).to.eql(null);
@@ -56,7 +62,7 @@ describe('REST api', function() {
 
   it('should update an note', function(done) {
       var id = this.testNote._id;
-      chai.request('localhost:8888')
+      chai.request('localhost:8889')
           .put('/note' + id)
           .send({name: 'here is a new note'})
           .end(function(err, res) {
@@ -69,7 +75,7 @@ describe('REST api', function() {
 
   describe('404 route', function() {
     it('should 404 if you go to a bad path', function(done) {
-      chai.request('localhost:8888')
+      chai.request('localhost:8889')
           .get('/badbadbadroute')
           .end(function(err, res) {
             expect(err).to.equal(null);
